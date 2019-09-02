@@ -1,0 +1,14 @@
+*.img
+*.sh
+.git/
+hotplug/
+klogs/
+linux*
+scripts/
+userspace/
+.dockerignore
+.gitignore
+Dockerfile
+CHANGELOG.md
+COPYING
+README.md
