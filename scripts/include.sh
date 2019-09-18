@@ -31,6 +31,15 @@ linux_url=https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/$linux_file
 
 # linux internal
 linux=linux-5.1.15
+device=karray
+driver=drivers/$device
+module=$device
+modules=lib/modules
+setup=setup_${module}.sh
+remove=remove_${module}.sh
+test_bin=${module}_test
+test=test_${module}.sh
+tests=tests
 
 # qemu
 hotplug=hotplug
@@ -47,7 +56,12 @@ ftrace=ftrace/ftrace.log
 ftrace_archive=ftrace/ftrace.$today.log
 
 abort_non_docker_env() {
-	echo "not in a docker container"
+	echo "launch docker container"
+	exit -1
+}
+
+abort_docker_env() {
+	echo "exit docker container"
 	exit -1
 }
 

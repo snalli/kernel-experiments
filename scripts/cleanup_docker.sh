@@ -7,6 +7,8 @@ include=$script_dir/include.sh
 
 source $include
 
+[[ $DOCKER == "yes" ]] && abort_docker_env
+
 docker rm --force $docker_container
 docker rmi -f $docker_image
 docker rmi -f $base_image

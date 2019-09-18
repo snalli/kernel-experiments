@@ -7,6 +7,8 @@ include=$script_dir/include.sh
 
 source $include
 
+[[ $DOCKER == "yes" ]] && abort_docker_env
+
 curl $linux_url -o $linux_file
 [[ $? == 0 ]] || abort_file_not_found
 tar --keep-newer-files -xvf $linux_file

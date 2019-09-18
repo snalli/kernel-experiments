@@ -7,6 +7,8 @@ include=$script_dir/include.sh
 
 source $include
 
+[[ $DOCKER == "yes" ]] && abort_docker_env
+
 #qemu opts
 accel=hvf
 base=utc

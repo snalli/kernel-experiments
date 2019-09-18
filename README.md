@@ -8,7 +8,9 @@ description: >-
 
 I am fascinated by [Linux](https://www.kernel.org) kernel due to a high degree of insight it gives me into internals of an operating system and a vast community of expert developers I can count on for help. I could experiment with it on sacrificial machines during internships and [graduate school](http://pages.cs.wisc.edu/~sankey/homepage.html). All I have now is a personal laptop to experiment with.
 
-This [article](https://kdump-1.gitbook.io/my-kernel-dump/) describes a process of setting up an environment to compile, execute and experiment with Linux kernel on Mac. It is good for understanding kernel internals in action but not for performance testing. Setup code is available here for [download](downloads.md).
+This [article](https://kdump-1.gitbook.io/my-kernel-dump/) describes a process of setting up an environment to compile, execute and experiment with Linux kernel on Mac. It is good for understanding kernel internals in action but not for performance testing.
+
+**version 0.1.0** is available for [download](downloads.md).
 
 ## How to setup environment on host
 
@@ -141,7 +143,7 @@ I configured the guest kernel to include minimal code required to boot it in `qe
 
 Using `make menuconfig` I disabled networking support, all filesystems, graphics, power managers, ASLR, ACPI, SELinux, SMP support, NUMA support and lot of drivers for hardware I don't possess or intend to use with `qemu` including mouse or keyboard. The kernel config is available here for [download](downloads.md).
 
-The guest kernel receives inputs and sends output via serial console `ttyS0`. Since I disabled networking in the guest kernel, I had to disable guest userspace components that depend on it including `udevadm`. I disabled all filesystems because Tinycore's Busybox userspace boots off of `initramfs` in-memory filesystem obtained by decompressing a [cpio](https://en.wikipedia.org/wiki/Cpio) archive. No modifications to the filesystem are persisted to the archive ensuring a pristine boot each time. However, I configured support for ftrace, memory hot-plug and kernel modules.
+The guest kernel receives inputs and sends output via serial console `ttyS0`. Since I disabled networking in the guest kernel, I had to disable guest userspace components that depend on it including `udevadm`. I disabled all filesystems because Tinycore's Busybox userspace boots off of `initramfs` in-memory filesystem obtained by decompressing a [cpio](https://en.wikipedia.org/wiki/Cpio) archive. No modifications to the filesystem are persisted to the archive ensuring a pristine boot each time. However, I configured support for ftrace, memory hot-plug and kernel modules. The kernel config is available for [download](downloads.md).
 
 #### ftrace
 
@@ -231,7 +233,7 @@ host$ kill `pgrep qemu`
 <guest shell>
 ```
 
-I wanted the smallest possible userspace devoid of GUI for the guest to avoid slowing down other processes on the host OS. I found [Tinycore](https://distro.ibiblio.org/tinycorelinux/) Linux and decided to use its [Busybox](https://busybox.net) userspace after some modifications including disabling `udevadm` and starting a background process immediately after booting the guest to emit `ftrace` to `ttyS1`. [`debootstrap`](https://wiki.debian.org/Debootstrap) is another alternative. The guest userspace is available here for [download](downloads.md).
+I wanted the smallest possible userspace devoid of GUI for the guest to avoid slowing down other processes on the host OS. I found [Tinycore](https://distro.ibiblio.org/tinycorelinux/) Linux and decided to use its [Busybox](https://busybox.net) userspace after some modifications including disabling `udevadm` and starting a background process immediately after booting the guest to emit `ftrace` to `ttyS1`. [`debootstrap`](https://wiki.debian.org/Debootstrap) is another alternative. The guest userspace is available for [download](downloads.md).
 
 #### How to make guest userspace
 
