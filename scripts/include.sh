@@ -17,13 +17,17 @@ klog=$top_dir/klogs
 # docker cmds & args
 docker_cmd=/bin/bash
 docker_file=$top_dir/Dockerfile
+updates_docker_file=$top_dir/Dockerfile_updates
 docker_container=fedora
 base_image=fedora
-docker_image=linux-build:$base_image
+updates_image=fedora-updates:latest
+docker_image=fedora-sandbox:latest
 
 # See Dockerfile
-rootfs=/home/rootfs
+container_home=/home
+rootfs=$container_home/rootfs
 rootwd=root
+tracer=tracer
 
 # linux
 linux_file=linux-5.1.15.tar.gz
@@ -55,6 +59,22 @@ dmesg_archive=dmesg/dmesg.$today.log
 ftrace=ftrace/ftrace.log
 ftrace_archive=ftrace/ftrace.$today.log
 
+# cross-compiler for x86_64
+X86_64="x86_64"
+install=install
+install_x86_64=$install/$X86_64
+X86_64_LOCAL_REPO=local
+X86_64_LOCAL_REPO_ROOT=$container_home/repo/x86_64
+X86_64_LOCAL_INSTALL_ROOT=$container_home/$install_x86_64
+X86_64_LOCAL_REPO_FILE=$X86_64_LOCAL_REPO_ROOT/x86_64-local.repo
+X86_64_LOCAL_REPO_CONFIG="["${X86_64_LOCAL_REPO}"] \nname=x86_64-local \nbaseurl=file://"${X86_64_LOCAL_REPO_ROOT}" \nenabled=1 \ngpgcheck=0"
+NATIVE_ARCH=`arch`
+if [[ $NATIVE_ARCH != $X86_64 ]]
+then
+	export ARCH=x86_64
+	export CROSS_COMPILE=x86_64-linux-gnu-
+fi
+
 abort_non_docker_env() {
 	echo "launch docker container"
 	exit -1
@@ -73,4 +93,9 @@ abort_empty_dir() {
 abort_file_not_found() {
 	echo "file not found"
 	exit -3
+}
+
+abort_x86_64() {
+	echo "not required since arch is "$X86_64
+	exit -4
 }

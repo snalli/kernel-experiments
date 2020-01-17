@@ -11,7 +11,12 @@ source $include
 
 docker rm --force $docker_container
 docker rmi -f $docker_image
-docker rmi -f $base_image
+
+# don't cleanup base image unless really needed
+if [[ $1 == "all" ]]
+then
+	docker rmi -f $updates_image $base_image
+fi
 
 docker ps -a
 echo " "

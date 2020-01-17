@@ -11,11 +11,14 @@ source $include
 
 docker rm --force $docker_container
 
+mkdir -p $top_dir/$install_x86_64
+
 docker run \
-	--mount type=bind,src=$top_dir/$linux,dst=/home/$linux \
-	--mount type=bind,src=$top_dir/$scripts,dst=/home/$scripts \
-	--mount type=bind,src=$top_dir/$userspace,dst=/home/$userspace \
-	--mount type=bind,src=$top_dir/$tests,dst=/home/$tests \
+	--mount type=bind,src=$top_dir/$linux,dst=$container_home/$linux \
+	--mount type=bind,src=$top_dir/$scripts,dst=$container_home/$scripts,readonly \
+	--mount type=bind,src=$top_dir/$userspace,dst=$container_home/$userspace \
+	--mount type=bind,src=$top_dir/$tests,dst=$container_home/$tests \
+	--mount type=bind,src=$top_dir/$install_x86_64,dst=$container_home/$install_x86_64 \
 	--name $docker_container \
 	-t \
 	-i $docker_image \

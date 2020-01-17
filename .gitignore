@@ -1,3 +1,4 @@
 *.img
 linux*
 .DS_Store
+install/

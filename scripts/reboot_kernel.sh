@@ -9,8 +9,11 @@ source $include
 
 [[ $DOCKER == "yes" ]] && abort_docker_env
 
-#qemu opts
+# qemu opts
+# for macbook
 accel=hvf
+# for chromebook
+accel=tcg
 base=utc
 clock=host
 cpu=qemu64
@@ -54,7 +57,6 @@ printf "\n\n reboot $kernel at $now \n\n" >> $klog/$ftrace_archive
 printf "\n\n reboot $kernel at $now \n\n" >> $klog/$qlog_archive
 
 qemu-system-x86_64 \
-	-accel $accel \
 	-append "$append" \
 	-chardev file,id=ttyS1_logfile,path=$klog/$dmesg,mux=off \
 	-chardev file,id=ttyS2_logfile,path=$klog/$ftrace,mux=off \
@@ -64,7 +66,7 @@ qemu-system-x86_64 \
 	-initrd $initrd \
 	-kernel $kernel \
 	-m $mem_size,slots=$n_slot,maxmem=$max_mem_size  \
-	-machine pc \
+	-machine pc,accel=$accel \
 	-name $name \
 	-nographic \
 	-no-reboot \

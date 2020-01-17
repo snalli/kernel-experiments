@@ -9,10 +9,16 @@ source $include
 
 [[ $DOCKER == "yes" ]] && abort_docker_env
 
+docker build -f $updates_docker_file \
+	--force-rm \
+	--pull \
+	-t $updates_image \
+	$top_dir
+
 docker rmi -f $docker_image
 docker build -f $docker_file \
 	--force-rm \
-	--pull \
 	-t $docker_image \
 	$top_dir
+
 docker images

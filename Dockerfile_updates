@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright 2019 Sanketh Nalli
+
+FROM fedora:latest
+ENV DOCKER=yes
+
+# download native arch packages
+RUN yum -y update
+RUN yum -y install \
+	bc \
+	binutils-x86_64-linux-gnu \
+	bison \
+	cpio \
+	createrepo \
+	diffutils \
+	elfutils-libelf-devel \
+  	fakeroot \
+	file \
+	findutils \
+	flex \
+	gcc \
+	gcc-x86_64-linux-gnu \
+	glibc-static \
+	hostname \
+	kernel-devel \
+	less \
+	make \
+	ncurses-devel \
+	openssl-devel \
+	rpm \
+	vim \
+	yum-utils
+

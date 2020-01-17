@@ -1,17 +1,22 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright 2019 Sanketh Nalli
 
-script=$0
+script=$0 
 script_dir="$(cd "$(dirname $script)"; pwd -P)"
 include=$script_dir/include.sh
 
 source $include
 
 [[ $DOCKER == "yes" ]] || abort_non_docker_env
-[[ -n "$(ls -A $rootfs)" ]] || abort_empty_dir $rootfs
+[[ -n "$(ls -A $rootfs)" ]] || abort_empty_dir $rootfs 
 
 src=$top_dir/$tests
-make -C $src
+echo " "
+echo " "
+echo "compiling $src"
+echo " "
+export X86_64_LOCAL_INSTALL_ROOT
+make -C $src clean && make -C $src
 [[ $? == 0 ]] || exit 0
 
 dst=$rootfs/$rootwd
@@ -42,7 +47,7 @@ abort_no_dev() {
 [[ -n \"\$(ls -l /dev/${device})\" ]] || abort_no_dev $device
 
 echo \$tracing_on > \$tracefs/tracing_on
-./$test_bin
+./${test_bin}
 test_exit_code=\$?
 echo \$tracing_off > \$tracefs/tracing_on
 

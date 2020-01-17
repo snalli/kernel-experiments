@@ -1,31 +1,18 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 # Copyright 2019 Sanketh Nalli
 
-FROM fedora:latest
+FROM fedora-updates:latest
 
-RUN yum -y install \
-	bc \
-	bison \
-	cpio \
-	elfutils-libelf-devel \
-	file \
-	findutils \
-	flex \
-	gcc \
-	glibc-static \
-	hostname \
-	kernel-devel \
-	less \
-	make \
-	ncurses-devel \
-	openssl-devel \
-	python3-pip.noarch \
-	python36.x86_64 \
-	vim
+# download x86-64 packages
+## yum --downloadonly does not work; ignored by yum
+RUN mkdir -p /home/repo/x86_64
+WORKDIR /home/repo/x86_64
+RUN yumdownloader --forcearch x86_64 --resolve --alldeps \
+	glibc-static.x86_64 
 
-RUN pip3 install argparse
+# start fakeroot for mknod operations
+RUN echo -e "if [[ -z \$FAKEROOTKEY ]] \nthen \n\tfakeroot \n\texit \nfi" >> /root/.bashrc
 
-ENV DOCKER=yes
-
-# See scripts/include.sh
+# see scripts/include.sh
 RUN mkdir /home/rootfs
+WORKDIR /home

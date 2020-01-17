@@ -10,6 +10,10 @@ source $include
 [[ $DOCKER == "yes" ]] || abort_non_docker_env
 [[ -n "$(ls -A $rootfs)" ]] || abort_empty_dir $rootfs
 
+echo " "
+echo " "
+echo "compiling $driver"
+echo " "
 src=$top_dir/$linux/$driver
 make -C $top_dir/$linux M=$src modules
 [[ $? == 0 ]] || exit 0
